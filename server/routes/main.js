@@ -4,7 +4,15 @@ const router=express.Router();
 
 
 router.get('',(req,res)=>{
-    res.send("hello world")
+    const locals={
+        title:"nodeJs Blog",
+        description:"simple blog using nodeJs,express and mongoose"
+    }
+    res.render('index',{locals});
+});
+
+router.get('/about',(req,res)=>{
+    res.render('about');
 });
 
 module.exports=router
