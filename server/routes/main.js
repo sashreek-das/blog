@@ -40,32 +40,63 @@ router.get('', async(req, res) => {
 
 //POST request
 //post--searchTerm
-router.post('/search',async(req,res)=>{
+
+// router.post('../views/search', async (req, res) => {
+//     try {
+//     const locals = {
+//         title: "Search",
+//         description: "Simple Blog created with NodeJs, Express & MongoDb."
+//     }
+//     let searchTerm = req.body.searchTerm;
+//     const searchNoSpecialChar = searchTerm.replace(/[^a-zA-Z0-9 ]/g, "")
+
+//     const data = await Post.find({
+//         $or: [
+//         { title: { $regex: new RegExp(searchNoSpecialChar, 'i') }},
+//         { body: { $regex: new RegExp(searchNoSpecialChar, 'i') }}
+//         ]
+//     });
+
+//     res.render("search", {
+//         data,
+//         locals,
+//         currentRoute: '/'
+//     });
+//     } catch (error) {
+//         console.log(error);
+//     }
+// });
+router.post('/search', async (req, res) => {
     try {
         const locals = {
-            title:"Search",
-            description:"Simple Blog using Express and MongoDb"
+            title: "Search",
+            description: "Simple Blog using Express and MongoDb"
         }
-        let searchTerm=req.bosy.searchTerm;
-        const searchNoSpecialChar = searchTerm.replace(/[^a-zA-Z0-9 ]/g, "")
-        const data=await Post.find({
-            $or:[
-                
-                    { title: { $regex: new RegExp(searchNoSpecialChar, 'i') }},
-                    { body: { $regex: new RegExp(searchNoSpecialChar, 'i') }}
-                
-            ]
+        let searchTerm = req.body.searchTerm;
+
+        // Remove special characters from search term
+        const searchNoSpecialChar = searchTerm.replace(/[^a-zA-Z0-9 ]/g, "");
+
+        // Create a case-insensitive search term
+        const caseInsensitiveSearchTerm = searchNoSpecialChar.toLowerCase();
+
+        // Fetch posts from the database and filter based on the modified search term
+        const posts = await Post.find();
+        const filteredPosts = posts.filter(post =>
+            post.title.toLowerCase().includes(caseInsensitiveSearchTerm) ||
+            post.body.toLowerCase().includes(caseInsensitiveSearchTerm)
+        );
+
+        res.render("search", {
+            data: filteredPosts,
+            locals,
+            currentRoute: '/'
         });
-        res.render("search",{
-            data,locals,currentRoute:'/'
-        })
     } catch (error) {
-        
+        console.log(error);
+        res.status(500).send("Internal Server Error");
     }
-})
-
-
-
+});
 
 
 
@@ -89,7 +120,7 @@ router.get('/post/:id',async(req,res)=>{
     } catch (error) {
         console.log(error);
     }
-})
+});
 
 
 

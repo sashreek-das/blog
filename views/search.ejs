@@ -1,15 +1,13 @@
 <div class="author">
-    <h1 class="author__heading">
-        Search Results
-    </h1>
+    <h1 class="author__heading">Search Results</h1>
 </div>
+
 <section class="articles">
+
     <ul class="article-ul">
-
         <% data.forEach(post=> { %>
-
             <li>
-                <a href="/post/<%= post._id%>">
+                <a href="/post/<%= post._id %>">
                     <span>
                         <%= post.title %>
                     </span>
@@ -20,4 +18,6 @@
             </li>
             <% }) %>
     </ul>
+
+
 </section>
