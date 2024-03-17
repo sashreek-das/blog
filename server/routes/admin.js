@@ -29,10 +29,12 @@ router.get('/admin', async (req, res) => {
 router.post('/admin', async (req, res) => {
     try {
         const { username, password } = req.body;
-        console.log("Username:", username);
-        console.log("Password:", password);
+        console.log(req.body)
         res.redirect('/admin');
-    } catch (error) {
+    } 
+    
+    
+    catch (error) {
         console.log(error);
     }
 });
